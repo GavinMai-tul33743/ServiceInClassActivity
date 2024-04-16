@@ -45,6 +45,7 @@ class TimerService : Service() {
         // Stop a currently running timer
         fun stop() {
             if (::t.isInitialized || isRunning) {
+                textView!!.text = null
                 t.interrupt()
             }
         }
