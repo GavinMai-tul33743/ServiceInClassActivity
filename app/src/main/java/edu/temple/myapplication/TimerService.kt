@@ -6,6 +6,8 @@ import android.os.Binder
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
+import android.widget.TextView
+import kotlinx.coroutines.NonDisposableHandle.parent
 
 @Suppress("ControlFlowWithEmptyBody")
 class TimerService : Service() {
@@ -17,6 +19,8 @@ class TimerService : Service() {
     private var paused = false
 
     lateinit var timeHandler : Handler
+
+    lateinit var textView : TextView
 
     inner class TimerBinder : Binder() {
 
@@ -53,6 +57,10 @@ class TimerService : Service() {
             timeHandler = _handler
         }
 
+        fun setTextView(_view : TextView){
+            textView = _view
+        }
+
     }
 
     override fun onCreate() {
@@ -86,6 +94,7 @@ class TimerService : Service() {
             try {
                 for (i in startValue downTo 1)  {
                     Log.d("Countdown", i.toString())
+                    textView!!.text = i.toString()
                         while (paused);
                     if(::timeHandler.isInitialized){
                         timeHandler.sendEmptyMessage(i)
